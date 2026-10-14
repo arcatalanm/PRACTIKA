@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -31,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,17 +38,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.practika.ui.components.AppBottomBar
 import com.example.practika.ui.components.HomeActionCard
+import com.example.practika.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onLogout: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AuthViewModel = viewModel()
 ) {
-    // Estado para controlar qué sección está seleccionada en la Bottom Bar
     var seccionActual by remember { mutableStateOf("home") }
+    val usuario by viewModel.usuarioActivo.collectAsState()
 
     Scaffold(
         topBar = {
@@ -72,137 +75,84 @@ fun HomeScreen(
         bottomBar = {
             AppBottomBar(
                 seccionActual = seccionActual,
-                onSeccionSeleccionada = { nuevaSeccion ->
-                    seccionActual = nuevaSeccion
-                }
+                onSeccionSeleccionada = { seccionActual = it }
             )
         },
-        containerColor = MaterialTheme.colorScheme.background,
         modifier = modifier
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             when (seccionActual) {
-                // SECCIÓN 1: ASIGNATURAS (Izquierda)
+                // 1. ASIGNATURAS (2° Básico)
                 "asignaturas" -> {
                     Text(
                         text = "Asignaturas de 2° Básico",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
-                    HomeActionCard(
-                        title = "Lenguaje y Comunicación",
-                        description = "Lectura comprensiva y escritura",
-                        icon = Icons.Default.Book
+                    val materias = listOf(
+                        Triple("Lenguaje y Comunicación", "Lectura comprensiva y escritura", Icons.Default.Book),
+                        Triple("Matemática", "Números, operaciones y patrones", Icons.Default.Calculate),
+                        Triple("Ciencias Naturales", "Animales, plantas y el cuerpo humano", Icons.Default.Eco),
+                        Triple("Historia y Geografía", "Comunidad, país y tradiciones", Icons.Default.Public)
                     )
-                    HomeActionCard(
-                        title = "Matemática",
-                        description = "Números, operaciones y patrones",
-                        icon = Icons.Default.Calculate
-                    )
-                    HomeActionCard(
-                        title = "Ciencias Naturales",
-                        description = "Animales, plantas y el cuerpo humano",
-                        icon = Icons.Default.Eco
-                    )
-                    HomeActionCard(
-                        title = "Historia y Geografía",
-                        description = "Comunidad, país y tradiciones",
-                        icon = Icons.Default.Public
-                    )
+                    materias.forEach { (nombre, desc, icono) ->
+                        HomeActionCard(title = nombre, description = desc, icon = icono)
+                    }
                 }
 
-                // SECCIÓN 2: INICIO / HOME (Centro)
+                // 2. INICIO
                 "home" -> {
-                    // Tarjeta de Bienvenida
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
                     ) {
-                        Column(modifier = Modifier.padding(20.dp)) {
+                        Column(modifier = Modifier.padding(16.dp)) {
                             Text(
-                                text = "¡Hola de nuevo!",
+                                text = "¡Hola, ${usuario?.nombreCompleto?.ifBlank { "Estudiante" } ?: "Estudiante"}!",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                                fontWeight = FontWeight.Bold
                             )
-                            Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "Bienvenido a tu panel principal. Aquí podrás ver tus actividades y progresos.",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                                text = "Bienvenido a MPAZ PRO 2.°. Selecciona una opción para comenzar.",
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
 
-                    Text(
-                        text = "Módulos de práctica",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-
-                    HomeActionCard(
-                        title = "Mis Tareas",
-                        description = "Revisa las actividades pendientes de hoy",
-                        icon = Icons.Default.CheckCircle
-                    )
-
-                    HomeActionCard(
-                        title = "Logros",
-                        description = "Consulta tus metas y medallas alcanzadas",
-                        icon = Icons.Default.Star
-                    )
-
-                    HomeActionCard(
-                        title = "Mi Perfil",
-                        description = "Configuración y datos de tu cuenta",
-                        icon = Icons.Default.Person
-                    )
+                    Text("Módulos de práctica", fontWeight = FontWeight.SemiBold)
+                    HomeActionCard(title = "Mis Tareas", description = "Revisa las actividades pendientes", icon = Icons.Default.CheckCircle)
+                    HomeActionCard(title = "Logros", description = "Metas y medallas alcanzadas", icon = Icons.Default.Star)
+                    HomeActionCard(title = "Mi Perfil", description = "Datos de tu cuenta", icon = Icons.Default.Person)
                 }
 
-                // SECCIÓN 3: PERFIL (Derecha)
+                // 3. PERFIL
                 "perfil" -> {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    ) {
-                        Column(modifier = Modifier.padding(20.dp)) {
-                            Text(
-                                text = "Perfil del Estudiante",
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text("Estudiante: Alumno Ficticio", style = MaterialTheme.typography.bodyMedium)
-                            Text("Curso: 2° Básico A", style = MaterialTheme.typography.bodyMedium)
-                            Text("Colegio: Escuela Marcela Paz", style = MaterialTheme.typography.bodyMedium)
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text("Perfil del Estudiante", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                            Text("Estudiante: ${usuario?.nombreCompleto?.ifBlank { "Sin registrar" } ?: "Sin registrar"}")
+                            Text("RUT: ${usuario?.rut?.ifBlank { "Sin RUT" } ?: "Sin RUT"}")
+                            Text("Correo: ${usuario?.email?.ifBlank { "Sin Correo" } ?: "Sin Correo"}")
+                            Text("Colegio: Escuela Marcela Paz (2° Básico)")
 
-                            Spacer(modifier = Modifier.height(24.dp))
+                            Spacer(modifier = Modifier.padding(top = 8.dp))
 
-                            // Botón explícito para cerrar sesión dentro del perfil
                             Button(
                                 onClick = onLogout,
                                 modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.error
-                                )
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                             ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                                    contentDescription = "Cerrar sesión"
-                                )
+                                Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text("Cerrar Sesión")
                             }

@@ -15,29 +15,20 @@ fun AppBottomBar(
     seccionActual: String,
     onSeccionSeleccionada: (String) -> Unit
 ) {
+    val items = listOf(
+        Triple("asignaturas", "Asignaturas", Icons.Default.Book),
+        Triple("home", "Inicio", Icons.Default.Home),
+        Triple("perfil", "Perfil", Icons.Default.Person)
+    )
+
     NavigationBar {
-        // Asignaturas
-        NavigationBarItem(
-            selected = seccionActual == "asignaturas",
-            onClick = { onSeccionSeleccionada("asignaturas") },
-            icon = { Icon(imageVector = Icons.Default.Book, contentDescription = "Asignaturas") },
-            label = { Text("Asignaturas") }
-        )
-
-        // Incio
-        NavigationBarItem(
-            selected = seccionActual == "home",
-            onClick = { onSeccionSeleccionada("home") },
-            icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "Inicio") },
-            label = { Text("Inicio") }
-        )
-
-        // Perfil
-        NavigationBarItem(
-            selected = seccionActual == "perfil",
-            onClick = { onSeccionSeleccionada("perfil") },
-            icon = { Icon(imageVector = Icons.Default.Person, contentDescription = "Perfil") },
-            label = { Text("Perfil") }
-        )
+        items.forEach { (clave, titulo, icono) ->
+            NavigationBarItem(
+                selected = seccionActual == clave,
+                onClick = { onSeccionSeleccionada(clave) },
+                icon = { Icon(icono, contentDescription = titulo) },
+                label = { Text(titulo) }
+            )
+        }
     }
 }
