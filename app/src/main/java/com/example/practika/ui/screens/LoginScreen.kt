@@ -59,7 +59,7 @@ fun LoginScreen(
         )
 
         Text(
-            text = "Bienvenido a MPAZ PRO 2.°",
+            text = "Bienvenido a PRACTIKA",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

@@ -42,7 +42,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         prefs.getString("rut_activo", null)?.let { rut ->
             viewModelScope.launch {
                 usuarioDao.buscarPorRut(rut)?.let {
-                    _usuarioActivo.value = Usuario(it.rut, it.nombreCompleto, it.email)
+                    _usuarioActivo.value = Usuario(it.rut, it.nombreCompleto, it.email, it.rol, it.imagenPerfil)
                 }
             }
         }
@@ -89,7 +89,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             usuarioDao.insertarUsuario(nuevo)
 
             prefs.edit().putString("rut_activo", nuevo.rut).apply()
-            _usuarioActivo.value = Usuario(nuevo.rut, nuevo.nombreCompleto, nuevo.email)
+            _usuarioActivo.value = Usuario(nuevo.rut, nuevo.nombreCompleto, nuevo.email, nuevo.rol, nuevo.imagenPerfil)
             _registroForm.value = RegistroModel()
             _mensajeError.value = null
             onSuccess()
@@ -112,7 +112,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             prefs.edit().putString("rut_activo", u.rut).apply()
-            _usuarioActivo.value = Usuario(u.rut, u.nombreCompleto, u.email)
+            _usuarioActivo.value = Usuario(u.rut, u.nombreCompleto, u.email, u.rol, u.imagenPerfil)
             _mensajeError.value = null
             onSuccess()
         }

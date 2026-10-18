@@ -17,6 +17,9 @@ interface UsuarioDao {
     @Query("SELECT * FROM usuarios WHERE rut = :rut LIMIT 1")
     suspend fun buscarPorRut(rut: String): UsuarioEntity?
 
+    @Query("UPDATE usuarios SET imagenPerfil = :ruta WHERE rut = :rut")
+    suspend fun actualizarImagenPerfil(rut: String, ruta: String?)
+
     @Query("SELECT COUNT(*) FROM usuarios")
     suspend fun contarUsuarios(): Int
 }
