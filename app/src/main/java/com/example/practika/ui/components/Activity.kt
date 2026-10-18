@@ -60,12 +60,6 @@ fun ActivityForm(
                 fontWeight = FontWeight.Bold
             )
 
-            Text(
-                text = "ID de actividad: #${actividad.id} (automático)",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
             Text("Materia", style = MaterialTheme.typography.labelLarge)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Materia.entries.forEach { materia ->
