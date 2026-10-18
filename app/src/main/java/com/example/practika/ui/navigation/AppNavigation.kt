@@ -18,7 +18,6 @@ fun AppNavigation(
     navController: NavHostController = rememberNavController(),
     authViewModel: AuthViewModel = viewModel()
 ) {
-    // Estado Login = Vista Incial
     val destinoInicial = if (authViewModel.estaUsuarioLogueado()) "home" else "login"
 
     NavHost(

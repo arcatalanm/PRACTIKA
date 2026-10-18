@@ -22,10 +22,6 @@ import com.example.practika.viewmodel.Actividad
 import com.example.practika.viewmodel.TipoPregunta
 import com.example.practika.viewmodel.letraAlternativa
 
-/**
- * Visor de las actividades creadas. Componente "stateless": recibe la lista
- * y notifica la eliminación a través de [onEliminar].
- */
 @Composable
 fun ActivityList(
     actividades: List<Actividad>,

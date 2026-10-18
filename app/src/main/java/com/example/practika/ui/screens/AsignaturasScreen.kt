@@ -19,9 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.practika.ui.components.HomeActionCard
 
-/**
- * Sección "Asignaturas": las cuatro asignaturas de 2° Básico.
- */
 @Composable
 fun AsignaturasScreen(
     modifier: Modifier = Modifier

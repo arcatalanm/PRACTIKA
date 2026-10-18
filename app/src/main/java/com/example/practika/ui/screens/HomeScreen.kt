@@ -26,7 +26,6 @@ import com.example.practika.viewmodel.AuthViewModel
 import com.example.practika.viewmodel.PerfilViewModel
 import kotlinx.coroutines.delay
 
-/* Home */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -39,12 +38,10 @@ fun HomeScreen(
     val usuario by viewModel.usuarioActivo.collectAsState()
     val imagenUri by perfilViewModel.imagenUri.collectAsState()
 
-    // Carga la imagen guardada del usuario en cuanto se conoce su RUT.
     LaunchedEffect(usuario?.rut) {
         perfilViewModel.cargarImagen(usuario?.rut)
     }
 
-    // El confeti del avatar se dispara una vez por entrada a la aplicación.
     var mostrarConfeti by rememberSaveable { mutableStateOf(true) }
     LaunchedEffect(Unit) {
         delay(2600)

@@ -8,16 +8,8 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.roundToInt
 
-/**
- * Copia la imagen de perfil al almacenamiento interno de la app (filesDir),
- * redimensionándola, y devuelve la ruta del archivo para persistirla en la BD.
- */
 class ImagenPerfilStorage(private val context: Context) {
 
-    /**
-     * Guarda [origen] como imagen del usuario [rut] y devuelve la ruta absoluta,
-     * o null si no se pudo procesar.
-     */
     fun guardar(origen: Uri, rut: String): String? = try {
         val bitmap = decodificar(origen) ?: return null
 
@@ -36,7 +28,6 @@ class ImagenPerfilStorage(private val context: Context) {
         null
     }
 
-    /** Decodifica el bitmap aplicando [BitmapFactory.Options.inSampleSize] para no cargar la foto completa en memoria. */
     private fun decodificar(origen: Uri): Bitmap? {
         val resolver = context.contentResolver
 
@@ -50,7 +41,6 @@ class ImagenPerfilStorage(private val context: Context) {
         return resolver.openInputStream(origen)?.use { BitmapFactory.decodeStream(it, null, opciones) }
     }
 
-    /** Factor de reducción (potencia de 2) para acercarse a [maxLado] sin pasarse. */
     private fun calcularInSampleSize(ancho: Int, alto: Int, maxLado: Int): Int {
         var sample = 1
         while (ancho / (sample * 2) >= maxLado || alto / (sample * 2) >= maxLado) {
@@ -59,7 +49,6 @@ class ImagenPerfilStorage(private val context: Context) {
         return sample
     }
 
-    /** Ajuste fino: reduce la imagen para que su lado mayor no supere [MAX_LADO]. */
     private fun escalar(bitmap: Bitmap): Bitmap {
         val mayor = maxOf(bitmap.width, bitmap.height)
         if (mayor <= MAX_LADO) return bitmap

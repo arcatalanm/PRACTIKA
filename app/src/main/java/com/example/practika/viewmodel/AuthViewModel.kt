@@ -18,7 +18,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val usuarioDao = AppDatabase.getDatabase(application).usuarioDao()
     private val prefs = application.getSharedPreferences("auth", Context.MODE_PRIVATE)
 
-    // Estados
     private val _registroForm = MutableStateFlow(RegistroModel())
     val registroForm = _registroForm.asStateFlow()
 
@@ -31,14 +30,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val _usuarioActivo = MutableStateFlow<Usuario?>(null)
     val usuarioActivo = _usuarioActivo.asStateFlow()
 
-    // Expresiones regulares
     private val rutRegex = Regex("""^(\d{1,2}\.\d{3}\.\d{3}-[\dkK]|\d{7,8}-[\dkK])$""")
     private val nombreRegex = Regex("""^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]{3,}$""")
     private val emailRegex = Regex("""^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$""")
     private val passwordRegex = Regex("""^.{6,}$""")
 
     init {
-        // Cargar sesión si había un usuario guardado
         prefs.getString("rut_activo", null)?.let { rut ->
             viewModelScope.launch {
                 usuarioDao.buscarPorRut(rut)?.let {
@@ -50,19 +47,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     fun estaUsuarioLogueado(): Boolean = prefs.contains("rut_activo")
 
-    // Actualizadores del formulario de registro
     fun actualizarRut(v: String) { _registroForm.value = _registroForm.value.copy(rut = v) }
     fun actualizarNombre(v: String) { _registroForm.value = _registroForm.value.copy(nombreCompleto = v) }
     fun actualizarEmail(v: String) { _registroForm.value = _registroForm.value.copy(email = v) }
     fun actualizarPassword(v: String) { _registroForm.value = _registroForm.value.copy(password = v) }
     fun actualizarAceptaCondiciones(v: Boolean) { _registroForm.value = _registroForm.value.copy(aceptaCondiciones = v) }
 
-    // Actualizadores del formulario de login
     fun actualizarLoginIdentificador(v: String) { _loginForm.value = _loginForm.value.copy(identificador = v) }
     fun actualizarLoginPassword(v: String) { _loginForm.value = _loginForm.value.copy(password = v) }
     fun limpiarError() { _mensajeError.value = null }
 
-    // REGISTRO
     fun registrar(onSuccess: () -> Unit) {
         val d = _registroForm.value
         val error = when {
@@ -96,7 +90,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // LOGIN
     fun iniciarSesion(onSuccess: () -> Unit) {
         val l = _loginForm.value
         if (l.identificador.isBlank() || l.password.isBlank()) {
@@ -118,7 +111,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // LOGOUT
     fun cerrarSesion() {
         prefs.edit().clear().apply()
         _usuarioActivo.value = null

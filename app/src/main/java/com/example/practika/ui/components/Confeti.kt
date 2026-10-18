@@ -29,21 +29,14 @@ private class Particula(
 )
 
 private val COLORES_CONFETI = listOf(
-    Color(0xFF0284C7), // azul (primary)
-    Color(0xFF06B6D4), // cyan (secondary)
-    Color(0xFFF59E0B), // ámbar (tertiary)
-    Color(0xFFEF4444), // rojo
-    Color(0xFF22C55E), // verde
-    Color(0xFFA855F7)  // violeta
+    Color(0xFF0284C7),
+    Color(0xFF06B6D4),
+    Color(0xFFF59E0B),
+    Color(0xFFEF4444),
+    Color(0xFF22C55E),
+    Color(0xFFA855F7)
 )
 
-/**
- * Confeti que sale en abanico desde [origen]. Cuando [disparar] pasa a true
- * reproduce la animación una vez. No requiere dependencias externas.
- *
- * @param radioInicialDp distancia desde [origen] donde nace cada partícula
- *        (útil para que salgan desde el borde del avatar y no desde su centro).
- */
 @Composable
 fun Confeti(
     disparar: Boolean,
@@ -103,7 +96,6 @@ fun Confeti(
 private fun generarParticulas(cantidad: Int): List<Particula> {
     val random = Random(System.currentTimeMillis())
     return List(cantidad) {
-        // Ángulo entre -150° y -30° (hacia arriba y a los costados), en radianes.
         val anguloGrados = random.nextFloat() * 120f - 150f
         Particula(
             angulo = (anguloGrados * PI / 180.0).toFloat(),

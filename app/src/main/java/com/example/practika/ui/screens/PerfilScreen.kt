@@ -48,10 +48,6 @@ import com.example.practika.model.Usuario
 import com.example.practika.ui.components.ImagenInteligente
 import com.example.practika.viewmodel.PerfilViewModel
 
-/**
- * Sección "Perfil": permite personalizar la imagen de perfil (galería o cámara)
- * y muestra los datos del usuario junto con la opción de cerrar sesión.
- */
 @Composable
 fun PerfilScreen(
     usuario: Usuario?,
@@ -77,7 +73,6 @@ fun PerfilScreen(
         if (!exito) uriPendienteCamara = null
     }
 
-    // Solicita el permiso de cámara cuando aún no está concedido.
     val permisoCamaraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { concedido ->
@@ -92,7 +87,6 @@ fun PerfilScreen(
         }
     }
 
-    // Comprueba el permiso antes de abrir la cámara.
     fun tomarFotografia() {
         val permisoConcedido = ContextCompat.checkSelfPermission(
             context,
@@ -190,9 +184,6 @@ fun PerfilScreen(
     }
 }
 
-/**
- * Crea la URI temporal y abre la cámara, notificando la URI a través de [onUriCreada].
- */
 private fun abrirCamara(
     context: Context,
     camaraLauncher: ActivityResultLauncher<Uri>,

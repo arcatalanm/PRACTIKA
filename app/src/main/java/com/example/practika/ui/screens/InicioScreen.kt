@@ -35,7 +35,6 @@ import com.example.practika.ui.components.Confeti
 import com.example.practika.ui.components.ImagenInteligente
 import com.example.practika.viewmodel.ActividadViewModel
 
-/* Sección "Inicio" */
 @Composable
 fun InicioScreen(
     usuario: Usuario?,
@@ -47,7 +46,6 @@ fun InicioScreen(
     val formulario by actividadViewModel.formulario.collectAsState()
     val actividades by actividadViewModel.actividades.collectAsState()
 
-    // Posiciones (en coordenadas de la raíz) para ubicar el centro del avatar.
     var origenCaja by remember { mutableStateOf(Offset.Zero) }
     var centroAvatar by remember { mutableStateOf(Offset.Zero) }
 
@@ -100,21 +98,18 @@ fun InicioScreen(
                 }
             }
 
-            // Formulario base de actividad.
             ActivityForm(
                 actividad = formulario,
                 onActividadChange = actividadViewModel::actualizarFormulario,
                 onAgregar = actividadViewModel::agregarActividad
             )
 
-            // Visor de las actividades creadas.
             ActivityList(
                 actividades = actividades,
                 onEliminar = actividadViewModel::eliminarActividad
             )
         }
 
-        // Capa de confeti sobre todo el contenido, con origen en el avatar.
         Confeti(
             disparar = dispararConfeti,
             origen = centroAvatar - origenCaja,

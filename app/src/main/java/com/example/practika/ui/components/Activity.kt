@@ -35,11 +35,6 @@ import com.example.practika.viewmodel.Materia
 import com.example.practika.viewmodel.TipoPregunta
 import com.example.practika.viewmodel.letraAlternativa
 
-/**
- * Formulario base de una actividad. Componente "stateless": recibe el estado
- * en [actividad] y notifica cada cambio a través de [onActividadChange].
- * El [id][Actividad.id] es generado automáticamente por el ViewModel.
- */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ActivityForm(

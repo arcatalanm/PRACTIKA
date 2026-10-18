@@ -20,10 +20,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
-/**
- * Muestra la imagen de perfil en un círculo. Si [imagenUri] es null,
- * presenta un ícono genérico de persona como marcador de posición.
- */
 @Composable
 fun ImagenInteligente(
     imagenUri: Uri?,

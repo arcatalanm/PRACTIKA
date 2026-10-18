@@ -14,11 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-/**
- * Estado de la imagen de perfil del usuario logueado. La imagen se copia al
- * almacenamiento interno y su ruta se persiste en la base de datos, por lo que
- * sobrevive al cierre de la aplicación.
- */
 class PerfilViewModel(application: Application) : AndroidViewModel(application) {
 
     private val usuarioDao = AppDatabase.getDatabase(application).usuarioDao()
@@ -29,7 +24,6 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
 
     private var rutActual: String? = null
 
-    /** Carga la imagen guardada del [rut] (ruta en la BD → archivo en disco). */
     fun cargarImagen(rut: String?) {
         rutActual = rut
         if (rut == null) {
@@ -52,7 +46,6 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
         if (capturaCorrecta && uri != null) guardar(uri)
     }
 
-    /** Copia la imagen al almacenamiento interno y persiste su ruta en la BD. */
     private fun guardar(origen: Uri) {
         val rut = rutActual ?: return
         viewModelScope.launch {

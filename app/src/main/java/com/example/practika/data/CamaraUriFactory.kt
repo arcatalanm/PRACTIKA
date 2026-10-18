@@ -5,10 +5,6 @@ import android.net.Uri
 import androidx.core.content.FileProvider
 import java.io.File
 
-/**
- * Crea una [Uri] temporal (con FileProvider) para almacenar una fotografía
- * tomada con la cámara dentro del directorio de caché de la aplicación.
- */
 object CamaraUriFactory {
     fun crearUri(context: Context): Uri {
         val cameraDir = File(context.cacheDir, "camera")
