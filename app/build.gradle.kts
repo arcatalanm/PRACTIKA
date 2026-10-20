@@ -56,6 +56,9 @@ dependencies {
     // Coil para cargar imágenes (galería / cámara)
     implementation(libs.coil.compose)
 
+    // Librería Hashing BCrypt
+    implementation("at.favre.lib:bcrypt:0.10.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
