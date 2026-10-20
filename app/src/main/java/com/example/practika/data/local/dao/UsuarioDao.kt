@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.practika.data.local.entity.UsuarioEntity
 
+// Interfaz mediante AuthViewModel se comunica a la BD
 @Dao
 interface UsuarioDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

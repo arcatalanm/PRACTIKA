@@ -38,10 +38,8 @@ fun letraAlternativa(index: Int): String = "${('a' + index)})"
 class ActividadViewModel : ViewModel() {
 
     private var siguienteId = 1
-
     private val _formulario = MutableStateFlow(Actividad(id = siguienteId))
     val formulario: StateFlow<Actividad> = _formulario.asStateFlow()
-
     private val _actividades = MutableStateFlow<List<Actividad>>(emptyList())
     val actividades: StateFlow<List<Actividad>> = _actividades.asStateFlow()
 

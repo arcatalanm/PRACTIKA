@@ -31,6 +31,7 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
             return
         }
         viewModelScope.launch {
+            // Se busca la ruta donde se guarda la imagen
             val ruta = usuarioDao.buscarPorRut(rut)?.imagenPerfil
             _imagenUri.value = ruta
                 ?.takeIf { File(it).exists() }
@@ -49,7 +50,9 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
     private fun guardar(origen: Uri) {
         val rut = rutActual ?: return
         viewModelScope.launch {
+            // se obtiene su ruta de la imagne comprimida
             val ruta = withContext(Dispatchers.IO) { storage.guardar(origen, rut) } ?: return@launch
+            // Se actualiza la tabla 'usuarios' con Room
             usuarioDao.actualizarImagenPerfil(rut, ruta)
             _imagenUri.value = Uri.fromFile(File(ruta))
         }

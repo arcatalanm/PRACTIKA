@@ -38,6 +38,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = viewModel()
 ) {
+    // Se lee el estado desde AuthViewModel
     val loginForm by viewModel.loginForm.collectAsState()
     val mensajeError by viewModel.mensajeError.collectAsState()
 

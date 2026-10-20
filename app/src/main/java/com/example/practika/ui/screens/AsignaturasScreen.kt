@@ -30,6 +30,7 @@ fun AsignaturasScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Creacion de tuplas triple
         val materias = listOf(
             Triple("Lenguaje y Comunicación", "Lectura comprensiva y escritura", Icons.Default.Book),
             Triple("Matemática", "Números, operaciones y patrones", Icons.Default.Calculate),
@@ -37,6 +38,7 @@ fun AsignaturasScreen(
             Triple("Historia y Geografía", "Comunidad, país y tradiciones", Icons.Default.Public)
         )
         materias.forEach { (nombre, descripcion, icono) ->
+            // Se inyecta los datos en la tarjeta de HomeActionCard
             HomeActionCard(title = nombre, description = descripcion, icon = icono)
         }
     }

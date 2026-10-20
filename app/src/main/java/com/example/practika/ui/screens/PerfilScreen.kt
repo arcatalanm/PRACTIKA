@@ -60,12 +60,14 @@ fun PerfilScreen(
 
     var uriPendienteCamara by remember { mutableStateOf<Uri?>(null) }
 
+    // Selector de Galeria
     val galeriaLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uriSeleccionado ->
         perfilViewModel.actualizarImagenDesdeGaleria(uriSeleccionado)
     }
 
+    // Selector de Camara
     val camaraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { exito ->
@@ -73,6 +75,7 @@ fun PerfilScreen(
         if (!exito) uriPendienteCamara = null
     }
 
+    // Peticion permiso uso camara
     val permisoCamaraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { concedido ->
@@ -88,9 +91,9 @@ fun PerfilScreen(
     }
 
     fun tomarFotografia() {
+        // Verifica si la app tiene permiso de camara
         val permisoConcedido = ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.CAMERA
+            context, Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
 
         if (permisoConcedido) {
@@ -190,6 +193,7 @@ private fun abrirCamara(
     onUriCreada: (Uri) -> Unit
 ) {
     try {
+        // Crea el archivo .jpg y genera la Uri mediante FileProvider
         val uri = CamaraUriFactory.crearUri(context)
         onUriCreada(uri)
         camaraLauncher.launch(uri)

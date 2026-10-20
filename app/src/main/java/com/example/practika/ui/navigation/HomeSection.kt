@@ -5,7 +5,7 @@ import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-
+// Definción secciones de la APP
 enum class HomeSection(
     val titulo: String,
     val icono: ImageVector

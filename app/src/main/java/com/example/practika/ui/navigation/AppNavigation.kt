@@ -11,13 +11,14 @@ import com.example.practika.ui.screens.HomeScreen
 import com.example.practika.ui.screens.LoginScreen
 import com.example.practika.ui.screens.RegisterScreen
 import com.example.practika.viewmodel.AuthViewModel
-
+// Orquestador de vistas (estados)
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     authViewModel: AuthViewModel = viewModel()
 ) {
+    // Validacion state (boolean)
     val destinoInicial = if (authViewModel.estaUsuarioLogueado()) "home" else "login"
 
     NavHost(
@@ -30,6 +31,7 @@ fun AppNavigation(
                 onNavigateToRegister = { navController.navigate("register") },
                 onNavigateToHome = {
                     navController.navigate("home") {
+                        // Destruye el Back Stack del login
                         popUpTo("login") { inclusive = true }
                     }
                 },
@@ -39,6 +41,7 @@ fun AppNavigation(
 
         composable("register") {
             RegisterScreen(
+                // Vuelve atras al login
                 onNavigateToLogin = { navController.popBackStack() },
                 onRegisterSuccess = {
                     navController.navigate("home") {
@@ -52,6 +55,7 @@ fun AppNavigation(
         composable("home") {
             HomeScreen(
                 onLogout = {
+                    // Cierre sesion y navega al login
                     authViewModel.cerrarSesion()
                     navController.navigate("login") {
                         popUpTo("home") { inclusive = true }
