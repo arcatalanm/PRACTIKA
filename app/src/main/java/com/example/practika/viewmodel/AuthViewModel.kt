@@ -87,7 +87,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 return@launch
             }
             // Hasheamos la password antes de crear la entity
-            val passHasheada = PasswordHasher.hashPassword(d.rut)
+            val passHasheada = PasswordHasher.hashPassword(d.password)
 
             // Persiste el usuario en la BD limpiando datos
             val nuevo = UsuarioEntity(
