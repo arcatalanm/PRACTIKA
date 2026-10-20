@@ -9,6 +9,7 @@ import com.example.practika.data.local.entity.UsuarioEntity
 import com.example.practika.model.LoginModel
 import com.example.practika.model.RegistroModel
 import com.example.practika.model.Usuario
+import com.example.practika.util.PasswordHasher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -85,8 +86,15 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 _mensajeError.value = "Este RUT ya está registrado"
                 return@launch
             }
+            // Hasheamos la password antes de crear la entity
+            val passHasheada = PasswordHasher.hashPassword(d.rut)
+
             // Persiste el usuario en la BD limpiando datos
-            val nuevo = UsuarioEntity(d.rut.trim(), d.nombreCompleto.trim(), d.email.trim(), d.password)
+            val nuevo = UsuarioEntity(
+                d.rut.trim(),
+                d.nombreCompleto.trim(),
+                d.email.trim(),
+                passHasheada) // <-- Se guarda hasheada en SQLite
             usuarioDao.insertarUsuario(nuevo)
 
             prefs.edit().putString("rut_activo", nuevo.rut).apply()
@@ -109,7 +117,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             // Validación para persistencia
             val u = usuarioDao.buscarPorIdentificador(l.identificador.trim())
-            if (u == null || u.password != l.password) {
+            // Verficamos usando verifyPassword
+            if (u == null || !PasswordHasher.verifyPassword(l.password, u.password)) {
                 _mensajeError.value = "Credenciales incorrectas o usuario no registrado"
                 return@launch
             }
