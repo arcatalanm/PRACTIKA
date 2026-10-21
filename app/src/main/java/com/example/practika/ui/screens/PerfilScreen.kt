@@ -43,7 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.practika.data.CamaraUriFactory
+import com.example.practika.util.CamaraUriFactory
 import com.example.practika.model.Usuario
 import com.example.practika.ui.components.ImagenInteligente
 import com.example.practika.viewmodel.PerfilViewModel

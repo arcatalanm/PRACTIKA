@@ -1,10 +1,11 @@
-package com.example.practika.data
+package com.example.practika.util
 
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
 import java.io.File
 
+// Creacion Uri temporal que necesita la app de cámara para escribir la foto (cacheDir/camera).
 object CamaraUriFactory {
     fun crearUri(context: Context): Uri {
         val cameraDir = File(context.cacheDir, "camera")

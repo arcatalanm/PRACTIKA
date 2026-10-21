@@ -1,4 +1,4 @@
-package com.example.practika.data
+package com.example.practika.data.storage
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,8 +8,8 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.roundToInt
 
+// Guarda la foto de perfil como archivo JPEG en el almacenamiento interno de la app.
 class ImagenPerfilStorage(private val context: Context) {
-
     fun guardar(origen: Uri, rut: String): String? = try {
         val bitmap = decodificar(origen) ?: return null
 
@@ -28,6 +28,7 @@ class ImagenPerfilStorage(private val context: Context) {
         null
     }
 
+    // Convierte una Uri (`content://` de galería o temporal de cámara) en [Bitmap].
     private fun decodificar(origen: Uri): Bitmap? {
         val resolver = context.contentResolver
 
@@ -41,6 +42,7 @@ class ImagenPerfilStorage(private val context: Context) {
         return resolver.openInputStream(origen)?.use { BitmapFactory.decodeStream(it, null, opciones) }
     }
 
+    // Marco de la imagen para mantener Aspect Ratio
     private fun calcularInSampleSize(ancho: Int, alto: Int, maxLado: Int): Int {
         var sample = 1
         while (ancho / (sample * 2) >= maxLado || alto / (sample * 2) >= maxLado) {
@@ -49,6 +51,7 @@ class ImagenPerfilStorage(private val context: Context) {
         return sample
     }
 
+    // Ajusta el bitmap para que su lado mayor no supere [MAX_LADO].
     private fun escalar(bitmap: Bitmap): Bitmap {
         val mayor = maxOf(bitmap.width, bitmap.height)
         if (mayor <= MAX_LADO) return bitmap
